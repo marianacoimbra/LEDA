@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-09-16T17:34:25.720-0300</date>
+  <logger>MARIANA VICTORIA SOUZA COIMBRA</logger>
+  <level>FINE</level>
+  <message>File 118210644-MARIANA VICTORIA SOUZA COIMBRA.zip was received. It was sent by MARIANA VICTORIA SOUZA COIMBRA from IP 150.165.42.192 at 16-09-2019 17*34*25</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-09-16T23:08:22.009-0300</date>
+  <logger>MARIANA VICTORIA SOUZA COIMBRA</logger>
+  <level>FINE</level>
+  <message>File 118210644-MARIANA VICTORIA SOUZA COIMBRA.zip was received. It was sent by MARIANA VICTORIA SOUZA COIMBRA from IP 192.168.0.17 at 16-09-2019 23*08*21</message>
+</record>
