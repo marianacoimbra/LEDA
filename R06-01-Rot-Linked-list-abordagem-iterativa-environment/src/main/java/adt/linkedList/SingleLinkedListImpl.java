@@ -10,38 +10,84 @@ public class SingleLinkedListImpl<T> implements LinkedList<T> {
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented!");
+		if (head.isNIL()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented!");
+		int size = 0;
+		SingleLinkedListNode<T> aux = head;
+		while (!(aux.isNIL())) {
+			size = size + 1;
+			aux = aux.next;
+		}
+		return size;
 	}
 
 	@Override
 	public T search(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented!");
+		SingleLinkedListNode<T> aux = head;
+		if (isEmpty()) {
+			return null;
+		} else {
+			while (!(aux.isNIL()) && !(aux.getData() == element)) {
+				aux = aux.next;
+			}
+		}
+		return aux.getData();
 	}
 
 	@Override
 	public void insert(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented!");
+		SingleLinkedListNode<T> aux = head;
+		if (head.isNIL()) {
+			SingleLinkedListNode<T> newHead = new SingleLinkedListNode<>();
+			head.setData(element);
+			head.setNext(newHead);
+			;
+		} else {
+			while (!(aux.next.isNIL())) {
+				aux = aux.next;
+			}
+			SingleLinkedListNode<T> newNode = new SingleLinkedListNode<>();
+			newNode.setData(element);
+			newNode.setNext(aux.getNext());
+			aux.setNext(newNode);
+		}
 	}
 
 	@Override
 	public void remove(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented!");
+		if (head.getData() == element) {
+			head = head.next;
+		} else {
+			SingleLinkedListNode<T> aux = head;
+			SingleLinkedListNode<T> previous = aux;
+			while (!aux.isNIL() && aux.getData() != element) {
+				previous = aux;
+				aux = aux.next;
+			}
+			if (!aux.isNIL()) {
+				previous.next = aux.next;
+			}
+		}
 	}
 
 	@Override
 	public T[] toArray() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented!");
+		int count = 0;
+		T[] array = (T[]) new Comparable[size()];
+		SingleLinkedListNode aux = head;
+		while(!aux.isNIL()) {
+			array[count] = (T) aux.getData();
+			aux = aux.getNext();
+			count++;
+		}
+		return array;
 	}
 
 	public SingleLinkedListNode<T> getHead() {
