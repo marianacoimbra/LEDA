@@ -27,6 +27,7 @@ public class StackRecursiveDoubleLinkedListImpl<T> implements Stack<T> {
 	public T pop() throws StackUnderflowException {
 		if (isEmpty()) {
 			throw new StackUnderflowException();
+		}
 		T saida = this.top();
 		this.top.removeLast();
 		return saida;
