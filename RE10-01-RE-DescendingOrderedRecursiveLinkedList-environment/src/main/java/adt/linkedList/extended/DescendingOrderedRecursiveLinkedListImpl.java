@@ -16,8 +16,7 @@ import adt.linkedList.RecursiveSingleLinkedListImpl;
  *
  * @param <T>
  */
-public class DescendingOrderedRecursiveLinkedListImpl<T> extends
-		RecursiveSingleLinkedListImpl<T> {
+public class DescendingOrderedRecursiveLinkedListImpl<T> extends RecursiveSingleLinkedListImpl<T> {
 
 	private Comparator<T> comparator;
 
@@ -32,26 +31,37 @@ public class DescendingOrderedRecursiveLinkedListImpl<T> extends
 	 * @return
 	 */
 	public T maximum() {
-		// TODO Implement your method here
-		throw new UnsupportedOperationException("Not implemented!");
+		T maior = this.getData();
+
+		RecursiveSingleLinkedListImpl<T> aux = this;
+		return auxMaximum(aux, maior);
+	}
+
+	private T auxMaximum(RecursiveSingleLinkedListImpl<T> aux, T maior) {
+		if (isEmpty()) {
+			return maior;
+		}
+		if(comparator.compare(maior, aux.getData()) > 0) {
+			maior = aux.getData();
+		}
+		return auxMaximum(aux.getNext(), maior);
 	}
 
 	/**
-	 * It puts all elements of otherList in this list. Try to make this methods
-	 * as fast as possible.
+	 * It puts all elements of otherList in this list. Try to make this methods as
+	 * fast as possible.
 	 * 
 	 * @param otherList
 	 */
 	public void insertAll(LinkedList<T> otherList) {
-		// TODO Implement your method here
-		throw new UnsupportedOperationException("Not implemented!");
+		
 	}
 
 	/**
-	 * This methods compares (for set equality) this list with otherList
-	 * (possibly containing repeated elements). This this method returns true if
-	 * the lists have the same elements. It does not matter how many times they
-	 * appear in otherList.
+	 * This methods compares (for set equality) this list with otherList (possibly
+	 * containing repeated elements). This this method returns true if the lists
+	 * have the same elements. It does not matter how many times they appear in
+	 * otherList.
 	 * 
 	 * @param otherList
 	 */
