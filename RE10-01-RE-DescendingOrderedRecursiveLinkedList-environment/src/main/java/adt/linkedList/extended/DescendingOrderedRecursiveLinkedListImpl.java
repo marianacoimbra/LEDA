@@ -54,7 +54,23 @@ public class DescendingOrderedRecursiveLinkedListImpl<T> extends RecursiveSingle
 	 * @param otherList
 	 */
 	public void insertAll(LinkedList<T> otherList) {
+		RecursiveSingleLinkedListImpl<T> aux = this;
+		aux = lastNode(aux);
+		T[] array = otherList.toArray();
+		RecursiveSingleLinkedListImpl<T> firstNode = (RecursiveSingleLinkedListImpl<T>) array[0];
 		
+		if(!isEmpty()) {
+			aux.setNext(firstNode);
+		}
+		
+	}
+	
+	private RecursiveSingleLinkedListImpl<T> lastNode(RecursiveSingleLinkedListImpl<T> aux) {
+		if(isEmpty()) {
+			return aux;
+		}
+		aux = aux.getNext();
+		return lastNode(aux.getNext());
 	}
 
 	/**
