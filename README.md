@@ -1,2 +1,2 @@
 # LEDA
-Exercícios de LEDA
+Roteiros da disciplina LEDA
