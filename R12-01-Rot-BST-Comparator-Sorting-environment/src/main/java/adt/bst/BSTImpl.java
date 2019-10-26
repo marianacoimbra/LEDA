@@ -1,7 +1,5 @@
 package adt.bst;
 
-import adt.bt.BTNode;
-
 public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	protected BSTNode<T> root;
@@ -21,121 +19,215 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	@Override
 	public int height() {
-		if(!this.isEmpty()) {
-			return recursiveHeight(this.root);
-		}
-		return -1;
+		return height(root);
 	}
 
-	private int recursiveHeight(BSTNode<T> node) {
-		if(node.isEmpty()) {
-			return 0;
-		}
-		return 1 + Math.max(recursiveHeight((BSTNode<T>)node.getLeft()), recursiveHeight((BSTNode<T>) node.getRight()));
+	private int height(BSTNode<T> node) {
+		if (node.isEmpty())
+			return -1;
+		return Math.max(this.height((BSTNode<T>) node.getLeft()), this.height((BSTNode<T>) node.getRight())) + 1;
 	}
 
 	@Override
 	public BSTNode<T> search(T element) {
-		if(!isEmpty()) { 
-			return recursiveSearch(this.root, element);
-		}
-		return null;
+		return recursiveSearch(element, root);
 	}
 
-	private BSTNode<T> recursiveSearch(BSTNode<T> node, T element) {
-		BSTNode <T> answer = null;
-		if(element != null) {
-			if(node.isEmpty() || node.getData().equals(element)) {
-				answer =  node;
-			} 
-			if(node.getData().compareTo(element) < 0) {
-				return recursiveSearch((BSTNode<T>)node.getRight(), element);
+	public BSTNode<T> recursiveSearch(T searched, BSTNode<T> node) {
+		if (searched != null && !node.isEmpty()) {
+			if (searched.compareTo(node.getData()) > 0) {
+				return recursiveSearch(searched, (BSTNode<T>) node.getRight());
+			} else if (searched.compareTo(node.getData()) < 0) {
+				return recursiveSearch(searched, (BSTNode<T>) node.getLeft());
 			} else {
-				return recursiveSearch((BSTNode<T>)node.getLeft(), element);
+				return node;
 			}
 		}
-		return answer;
+		return new BSTNode<T>();
 	}
 
 	@Override
 	public void insert(T element) {
-		insert(this.root, element);
+		recursiveInsert(element, root);
 	}
 
-	private void insert(BSTNode<T> node, T element) {
-		if(element != null) {
-			if(node.isEmpty()) {	
+	public void recursiveInsert(T element, BSTNode<T> node) {
+		if (element != null) {
+			if (node.isEmpty()) {
 				node.setData(element);
-				node.setLeft(new BTNode<>());
-				node.setRight(new BTNode<>());
-			}
-			if(element.compareTo(node.getData()) > 0) {
-				insert((BSTNode<T>) node.getRight(), element);
+				node.setLeft(new BSTNode<T>());
+				node.setRight(new BSTNode<T>());
+				node.getLeft().setParent(node);
+				node.getRight().setParent(node);
 			} else {
-				insert((BSTNode<T>) node.getLeft(), element);
+				if (element.compareTo(node.getData()) > 0) {
+					recursiveInsert(element, (BSTNode<T>) node.getRight());
+				} else if (element.compareTo(node.getData()) < 0) {
+					recursiveInsert(element, (BSTNode<T>) node.getLeft());
+				}
 			}
 		}
 	}
 
 	@Override
 	public BSTNode<T> maximum() {
-		return maximum(this.root);
+		return recursiveMaximum(root);
 	}
 
-	private BSTNode<T> maximum(BSTNode<T> node) {
-		BSTNode<T> answer = null;
-		if(!node.isEmpty()) {
-			answer = maximum((BSTNode<T>)node.getRight()); 
+	public BSTNode<T> recursiveMaximum(BSTNode<T> node) {
+		if (node.isEmpty()) {
+			return null;
+		} else if (node.getRight().isEmpty()) {
+			return node;
+		} else {
+			return recursiveMaximum((BSTNode<T>) node.getRight());
 		}
-		return answer;
 	}
+
 	@Override
 	public BSTNode<T> minimum() {
-		return minimum(this.root);
+		return recursiveMinimum(root);
 	}
 
-	private BSTNode<T> minimum(BSTNode<T> node) {
-		BSTNode<T> answer = null;
-		if(!node.isEmpty()) {
-			answer = minimum((BSTNode<T>)node.getLeft()); 
+	public BSTNode<T> recursiveMinimum(BSTNode<T> node) {
+		if (node.isEmpty()) {
+			return null;
+		} else if (node.getLeft().isEmpty()) {
+			return node;
+		} else {
+			return recursiveMinimum((BSTNode<T>) node.getLeft());
 		}
-		return answer;
 	}
 
 	@Override
 	public BSTNode<T> sucessor(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> node = this.search(element);
+		if (node.isEmpty())
+			return null;
+		BSTNode<T> result = recursiveMinimum((BSTNode<T>) node.getRight());
+		if (result != null) {
+			return result;
+		} else {
+			result = (BSTNode<T>) node.getParent();
+			while (result != null && result.getData().compareTo(node.getData()) < 0) {
+				result = (BSTNode<T>) result.getParent();
+			}
+			return result;
+		}
 	}
 
 	@Override
 	public BSTNode<T> predecessor(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> node = this.search(element);
+		if (node.isEmpty())
+			return null;
+		BSTNode<T> result = recursiveMaximum((BSTNode<T>) node.getLeft());
+		if (result != null) {
+			return result;
+		} else {
+			result = (BSTNode<T>) node.getParent();
+			while (result != null && result.getData().compareTo(node.getData()) > 0) {
+				result = (BSTNode<T>) result.getParent();
+			}
+			return result;
+		}
 	}
 
 	@Override
 	public void remove(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		if (element != null) {
+			BSTNode<T> node = search(element);
+			recursiveRemove(node);
+		}
+	}
+
+	private void recursiveRemove(BSTNode<T> node) {
+		if (node.isLeaf())
+			node.setData(null);
+		else if (!node.getLeft().isEmpty() && node.getRight().isEmpty()) {
+			BSTNode<T> auxNode = (BSTNode<T>) node.getLeft();
+			swap(auxNode, node);
+		} else if ((node.getLeft().isEmpty() && !node.getRight().isEmpty())) {
+			BSTNode<T> auxNode = (BSTNode<T>) node.getRight();
+			swap(auxNode, node);
+		} else {
+			BSTNode<T> auxNode = recursiveMinimum((BSTNode<T>) node.getRight());
+
+			T aux = node.getData();
+
+			node.setData(auxNode.getData());
+			auxNode.setData(aux);
+
+			recursiveRemove(auxNode);
+		}
+	}
+
+	private void swap(BSTNode<T> auxNode, BSTNode<T> node) {
+		if (node.getParent() == null) {
+			auxNode.setParent(null);
+			this.root = auxNode;
+		} else {
+			if (node.getParent().getLeft().getData().equals(node.getData())) {
+				node.getParent().setLeft(auxNode);
+			} else {
+				node.getParent().setRight(auxNode);
+			}
+			auxNode.setParent(node.getParent());
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public T[] buildingArray() {
+		int size = size();
+		return (T[]) new Comparable[size];
 	}
 
 	@Override
 	public T[] preOrder() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		T[] array = buildingArray();
+		recursivePreOrder(array, 0, root);
+		return array;
+	}
+
+	private int recursivePreOrder(T[] array, int i, BSTNode<T> node) {
+		if (!node.isEmpty()) {
+			array[i++] = node.getData();
+			i = recursivePreOrder(array, i, (BSTNode<T>) node.getLeft());
+			i = recursivePreOrder(array, i, (BSTNode<T>) node.getRight());
+		}
+		return i;
 	}
 
 	@Override
 	public T[] order() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		T[] array = buildingArray();
+		recursiveOrder(array, 0, root);
+		return array;
+	}
+
+	private int recursiveOrder(T[] array, int i, BSTNode<T> node) {
+		if (!node.isEmpty()) {
+			i = recursiveOrder(array, i, (BSTNode<T>) node.getLeft());
+			array[i++] = node.getData();
+			i = recursiveOrder(array, i, (BSTNode<T>) node.getRight());
+		}
+		return i;
 	}
 
 	@Override
 	public T[] postOrder() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		T[] array = buildingArray();
+		recursivePostOrder(array, 0, root);
+		return array;
+	}
+
+	private int recursivePostOrder(T[] array, int i, BSTNode<T> node) {
+		if (!node.isEmpty()) {
+			i = recursivePostOrder(array, i, (BSTNode<T>) node.getLeft());
+			i = recursivePostOrder(array, i, (BSTNode<T>) node.getRight());
+			array[i++] = node.getData();
+		}
+		return i;
 	}
 
 	/**
@@ -151,8 +243,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 		int result = 0;
 		// base case means doing nothing (return 0)
 		if (!node.isEmpty()) { // indusctive case
-			result = 1 + size((BSTNode<T>) node.getLeft())
-			+ size((BSTNode<T>) node.getRight());
+			result = 1 + size((BSTNode<T>) node.getLeft()) + size((BSTNode<T>) node.getRight());
 		}
 		return result;
 	}
