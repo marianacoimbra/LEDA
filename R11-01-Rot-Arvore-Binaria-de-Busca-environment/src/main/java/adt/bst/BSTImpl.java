@@ -157,7 +157,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 		if (node.isLeaf()) {
 			node.setData(null);
 		} else {
-			if(!node.getParent().isEmpty()) {
+			if (!node.getParent().isEmpty()) {
 				if (!node.getLeft().isEmpty() && node.getRight().isEmpty()) {
 					BSTNode<T> aux = (BSTNode<T>) node.getParent();
 					if (aux.getLeft().equals(node)) {
@@ -196,31 +196,67 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 			}
 
 		}
-		
+
 		T sucessor = sucessor(node.getData()).getData();
 		remove(sucessor);
 		node.setData(sucessor);
 	}
 
-
 	@Override
 	public T[] preOrder() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		T[] array = (T[]) new Comparable[this.size()];
+
+		recursivePreOrder(this.root, 0, array);
+		return array;
+	}
+
+	private void recursivePreOrder(BSTNode<T> node, int index,T[] array) {
+		if(!node.isEmpty()) {
+			
+			array[index] = node.getData();
+			recursivePreOrder((BSTNode<T>) node.getLeft(), index + 1, array);
+			recursivePreOrder((BSTNode<T>) node.getRight(), index + 1 + size((BSTNode<T>)node.getLeft()), array);
+		}
 	}
 
 	@Override
 	public T[] order() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		T[] array = (T[]) new Comparable[this.size()];
+
+		order(this.root, 0, array);
+
+		return array;
 	}
+
+	private int order (BSTNode<T> node, int index, T[] array) {
+		if (!node.isEmpty()) {
+			index = order((BSTNode<T>) node.getLeft(), index, array);
+			array[index++] = node.getData();
+			index = order((BSTNode<T>) node.getRight(), index, array);
+		}
+
+		return index;
+	}
+
 
 	@Override
 	public T[] postOrder() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		T[] array = (T[]) new Comparable[this.size()];
+
+		postOrder(this.root, 0, array);
+
+		return array;
 	}
 
+	private int postOrder(BSTNode<T> node, int index, T[] array) {
+		if (!node.isEmpty()) {
+			index = postOrder((BSTNode<T>) node.getLeft(), index, array);
+			index = postOrder((BSTNode<T>) node.getRight(), index, array);
+			array[index++] = node.getData();
+		}
+
+		return index;
+	}
 	/**
 	 * This method is already implemented using recursion. You must understand how
 	 * it work and use similar idea with the other methods.
