@@ -139,48 +139,77 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	@Override
 	public void remove(T element) {
 		if(element != null) {
-			remove(this.root, element);
+			BSTNode<T> node = search(element);
+			if(node.isLeaf()) {
+				node.setData(null);
+				node.setLeft(null);
+				node.setRight(null);
+			}  else if (node.getRight().isEmpty() || node.getLeft().isEmpty()) {
+				BSTNode<T> parent = (BSTNode<T>) node.getParent();
+				if (parent != null) {
+					if(!node.getLeft().isEmpty()) {
+						if(parent.getLeft().equals(node.getData())) {
+							parent.setLeft(node.getLeft()); 
+						} else if(parent.getRight().equals(node.getData())) {
+							parent.setRight(node.getLeft());
+						}  
+						node.getLeft().setParent(parent);
+					} else {
+						if(!node.getRight().isEmpty()) {
+							if(parent.getLeft().equals(node.getData())) {
+								parent.setLeft(node.getRight()); 
+							} else if(parent.getRight().equals(node.getData())) {
+								parent.setRight(node.getRight());
+							}  
+							node.getRight().setParent(parent);
+						}
+					}
+				}
+			} else if (!node.getLeft().isEmpty() && !node.getRight().isEmpty()) {
+				BSTNode<T> parent = (BSTNode<T>) node.getParent();
+				T sucessor = sucessor(node.getData()).getData();
+				if (parent != null) {
+					remove(sucessor);
+					node.setData(sucessor);
+				}
+			}
 		}
 	}
 
-	private void remove(BSTNode<T> node, T element) {
-		
-	}
-
-	@Override
-	public T[] preOrder() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
-	}
-
-	@Override
-	public T[] order() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
-	}
-
-	@Override
-	public T[] postOrder() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
-	}
-
-	/**
-	 * This method is already implemented using recursion. You must understand how
-	 * it work and use similar idea with the other methods.
-	 */
-	@Override
-	public int size() {
-		return size(root);
-	}
-
-	private int size(BSTNode<T> node) {
-		int result = 0;
-		// base case means doing nothing (return 0)
-		if (!node.isEmpty()) { // indusctive case
-			result = 1 + size((BSTNode<T>) node.getLeft()) + size((BSTNode<T>) node.getRight());
+		@Override
+		public T[] preOrder() {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Not implemented yet!");
 		}
-		return result;
-	}
 
-}
+		@Override
+		public T[] order() {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Not implemented yet!");
+		}
+
+		@Override
+		public T[] postOrder() {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Not implemented yet!");
+		}
+
+		/**
+		 * This method is already implemented using recursion. You must understand how
+		 * it work and use similar idea with the other methods.
+		 */
+		@Override
+		public int size() {
+			return size(root);
+		}
+
+		private int size(BSTNode<T> node) {
+			int result = 0;
+			// base case means doing nothing (return 0)
+			if (!node.isEmpty()) { // indusctive case
+				result = 1 + size((BSTNode<T>) node.getLeft()) + size((BSTNode<T>) node.getRight());
+			}
+			return result;
+		}
+
+	}
