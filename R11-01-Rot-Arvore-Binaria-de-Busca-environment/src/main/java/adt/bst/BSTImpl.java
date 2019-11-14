@@ -86,16 +86,16 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	@Override
 	public BSTNode<T> minimum() {
-		return recursiveMinimum(root);
+		return minimum(root);
 	}
 
-	private BSTNode<T> recursiveMinimum(BSTNode<T> node) {
+	private BSTNode<T> minimum(BSTNode<T> node) {
 		if (node.isEmpty()) {
 			return null;
 		} else if (node.getLeft().isEmpty()) {
 			return node;
 		} else {
-			return recursiveMinimum((BSTNode<T>) node.getLeft());
+			return minimum((BSTNode<T>) node.getLeft());
 		}
 	}
 
@@ -104,7 +104,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 		BSTNode<T> node = this.search(element);
 		if (node.isEmpty())
 			return null;
-		BSTNode<T> result = recursiveMinimum((BSTNode<T>) node.getRight());
+		BSTNode<T> result = minimum((BSTNode<T>) node.getRight());
 		if (result != null) {
 			return result;
 		} else {
@@ -152,7 +152,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 				BSTNode<T> auxNode = (BSTNode<T>) node.getRight();
 				swap(auxNode, node);
 			} else {
-				BSTNode<T> auxNode = recursiveMinimum((BSTNode<T>) node.getRight());
+				BSTNode<T> auxNode = minimum((BSTNode<T>) node.getRight());
 
 				T aux = node.getData();
 
