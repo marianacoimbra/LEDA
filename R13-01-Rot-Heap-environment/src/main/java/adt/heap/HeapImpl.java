@@ -89,6 +89,7 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 		int left = this.left(position);
 		int right = this.right(position);
 		int maior;
+
 		if (isValidIndex(left) && comparator.compare(heap[left], heap[position]) > 0) {
 			maior = left;
 		} else {
@@ -97,7 +98,6 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 		if (isValidIndex(right) && comparator.compare(heap[right], heap[maior]) > 0) {
 			maior = right;
 		}
-
 		if (maior != position) {
 			Util.swap(heap, position, maior);
 			this.heapify(maior);
@@ -106,7 +106,7 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 
 	@Override
 	public void insert(T element) {
-		if (index == heap.length - 1) {
+		if (index == this.heap.length - 1) {
 			heap = Arrays.copyOf(heap, heap.length + INCREASING_FACTOR);
 		}
 
@@ -139,26 +139,33 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 	@Override
 	public T extractRootElement() {
 		if (!this.isEmpty()) {
-			T max = heap[0];
+			T aux = heap[0];
 			heap[0] = heap[this.index];
-			this.heap[this.index] = null;
+			this.heap[index] = null;
 			this.index--;
 			heapify(0);
-			return max;
+			return aux;
 		}
 		return null;
 	}
 
 	@Override
 	public T rootElement() {
-		return this.heap[0];
+		if (isEmpty()) {
+			return null;
+		} else {
+			return this.heap[0];
+		}
 	}
 
+	// ordena todo o vetor com a buildHeap e cria um vetor auxiliar que vai reebendo
+	//as raizes (elementos ordenados)
 	@Override
 	public T[] heapsort(T[] array) {
-		if (array != null) {
+		if(array != null) {
 			HeapImpl<T> heap = new HeapImpl<T>((o1, o2) -> o1.compareTo(o2));
 			heap.buildHeap(array);
+			
 			T[] aux = (T[]) new Comparable[array.length];
 			for(int i = array.length - 1; i >= 0; i--) {
 				aux[i] = heap.extractRootElement();
@@ -185,19 +192,20 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 		return heap;
 	}
 
-	private boolean isLeaf(int i) {
+	public boolean isValidIndex(int index) {
+		boolean isValid = false;
+		if (index >= 0 && index <= this.index) {
+			isValid = true;
+		}
+		return isValid;
+	}
+
+	public boolean isLeaf(int index) {
 		boolean isLeaf = false;
-		if (i > parent(this.index) && i <= index) {
+		if (index > parent(this.index) && index <= this.index) {
 			isLeaf = true;
 		}
 		return isLeaf;
 	}
 
-	private boolean isValidIndex(int index) {
-		boolean isValid = false;
-		if (index <= this.index && index >= 0) {
-			isValid = true;
-		}
-		return isValid;
-	}
 }
