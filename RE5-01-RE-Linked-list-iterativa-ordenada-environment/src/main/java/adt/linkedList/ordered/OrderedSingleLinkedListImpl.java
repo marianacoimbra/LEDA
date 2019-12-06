@@ -2,6 +2,7 @@ package adt.linkedList.ordered;
 
 import java.util.Comparator;
 
+import adt.linkedList.DoubleLinkedListNode;
 import adt.linkedList.SingleLinkedListImpl;
 import adt.linkedList.SingleLinkedListNode;
 
@@ -16,8 +17,8 @@ import adt.linkedList.SingleLinkedListNode;
  *
  * @param <T>
  */
-public class OrderedSingleLinkedListImpl<T extends Comparable<T>> extends SingleLinkedListImpl<T> implements
-		OrderedLinkedList<T> {
+public class OrderedSingleLinkedListImpl<T extends Comparable<T>> extends SingleLinkedListImpl<T>
+		implements OrderedLinkedList<T> {
 
 	private Comparator<T> comparator;
 
@@ -27,14 +28,36 @@ public class OrderedSingleLinkedListImpl<T extends Comparable<T>> extends Single
 
 	@Override
 	public T minimum() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		if (this.isEmpty()) {
+			return null;
+		} else {
+			SingleLinkedListNode<T> aux = this.head;
+			T menor = aux.getData();
+			while(!aux.getNext().isNIL()) {
+				if(aux.getData().compareTo(aux.getNext().getData()) > 0) {
+					menor = aux.getNext().getData();
+				}
+				aux = aux.getNext();
+			}
+			return menor;
+		}
 	}
 
 	@Override
 	public T maximum() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		if(this.isEmpty()) {
+			return null;
+		} else {
+			SingleLinkedListNode<T> aux = this.head;
+			T maior = aux.getData();
+			while(!aux.getNext().isNIL()) {
+				if(aux.getNext().getData().compareTo(aux.getData()) > 0) {
+					maior = aux.getNext().getData();
+				}
+				aux = aux.getNext();
+			}
+			return maior;
+		}
 	}
 
 	public Comparator<T> getComparator() {

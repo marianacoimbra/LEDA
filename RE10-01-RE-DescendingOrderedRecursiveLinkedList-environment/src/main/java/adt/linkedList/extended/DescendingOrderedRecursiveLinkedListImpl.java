@@ -16,7 +16,8 @@ import adt.linkedList.RecursiveSingleLinkedListImpl;
  *
  * @param <T>
  */
-public class DescendingOrderedRecursiveLinkedListImpl<T> extends RecursiveSingleLinkedListImpl<T> {
+public class DescendingOrderedRecursiveLinkedListImpl<T> extends
+		RecursiveSingleLinkedListImpl<T> {
 
 	private Comparator<T> comparator;
 
@@ -31,53 +32,26 @@ public class DescendingOrderedRecursiveLinkedListImpl<T> extends RecursiveSingle
 	 * @return
 	 */
 	public T maximum() {
-		T maior = this.getData();
-
-		RecursiveSingleLinkedListImpl<T> aux = this;
-		return auxMaximum(aux, maior);
-	}
-
-	private T auxMaximum(RecursiveSingleLinkedListImpl<T> aux, T maior) {
-		if (isEmpty()) {
-			return maior;
-		}
-		if(comparator.compare(maior, aux.getData()) > 0) {
-			maior = aux.getData();
-		}
-		return auxMaximum(aux.getNext(), maior);
+		// TODO Implement your method here
+		throw new UnsupportedOperationException("Not implemented!");
 	}
 
 	/**
-	 * It puts all elements of otherList in this list. Try to make this methods as
-	 * fast as possible.
+	 * It puts all elements of otherList in this list. Try to make this methods
+	 * as fast as possible.
 	 * 
 	 * @param otherList
 	 */
 	public void insertAll(LinkedList<T> otherList) {
-		RecursiveSingleLinkedListImpl<T> aux = this;
-		aux = lastNode(aux);
-		T[] array = otherList.toArray();
-		RecursiveSingleLinkedListImpl<T> firstNode = (RecursiveSingleLinkedListImpl<T>) array[0];
-		
-		if(!isEmpty()) {
-			aux.setNext(firstNode);
-		}
-		
-	}
-	
-	private RecursiveSingleLinkedListImpl<T> lastNode(RecursiveSingleLinkedListImpl<T> aux) {
-		if(isEmpty()) {
-			return aux;
-		}
-		aux = aux.getNext();
-		return lastNode(aux.getNext());
+		// TODO Implement your method here
+		throw new UnsupportedOperationException("Not implemented!");
 	}
 
 	/**
-	 * This methods compares (for set equality) this list with otherList (possibly
-	 * containing repeated elements). This this method returns true if the lists
-	 * have the same elements. It does not matter how many times they appear in
-	 * otherList.
+	 * This methods compares (for set equality) this list with otherList
+	 * (possibly containing repeated elements). This this method returns true if
+	 * the lists have the same elements. It does not matter how many times they
+	 * appear in otherList.
 	 * 
 	 * @param otherList
 	 */

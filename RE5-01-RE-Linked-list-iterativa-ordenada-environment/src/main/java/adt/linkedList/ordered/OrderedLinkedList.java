@@ -18,7 +18,7 @@ import adt.linkedList.LinkedList;
 public interface OrderedLinkedList<T extends Comparable<T>> extends LinkedList<T> {
 
 	/**
-	 * Retorna o elemento de menor valor da lista ou null se a lista form vazia.
+	 * Retorna o elemento de menor valor da lista ou null se a lista for vazia.
 	 * Note que, se sua lista esta sempre ordenada, o minimum sera o primeiro 
 	 * elemento da lista.
 	 * 
